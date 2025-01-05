@@ -1,20 +1,161 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Lupi Delivery
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="home-content">
+  <div id="container" class="home-container">
+    @if(loading == true) {
+    <div id="loading" class="load-container">
+      <img src="../../assets/loading.svg" alt="loading" class="loading">
+    </div>
+    }
+    <ion-grid class="home-grid">
+      <ion-row class="ion-align-items-center header-row">
+        <ion-col size-xs="12" size-sm="12" size-md="9" size-lg="10" class="header-col">
+          <h2 class="section-title">Gestão de Pedidos</h2>
+        </ion-col>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+        <ion-col size-xs="12" size-sm="12" size-md="3" size-lg="2" class="ion-text-end header-col">
+          <ion-button class="home-button" size="default" expand="block" fill="outline" (click)="openAddOrderForm()">
+            Adicionar Pedido
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="full-height">
+        <ion-col size-xs="12" size-sm="12" size-md="4" size-lg="4">
+          <ion-card class="home-col">
+            <ion-card-header>
+              <h3 class="column-title">Novos</h3>
+            </ion-card-header>
+            <ion-card-content>
+              <div cdkDropList id="coluna1" [ngClass]="{'disabled': loading}" class="pedido-grid"
+                (cdkDropListDropped)="drop($event)" [cdkDropListData]="colunaNovo"
+                [cdkDropListConnectedTo]="[secondList, thirdList]" #firstList="cdkDropList">
+                <div *ngFor="let pedido of colunaNovo" cdkDrag class="pedido-card" id="ped-{{pedido.id}}">
+                  <div class="option-container" [class.hidden]="visibleOptions == pedido.id">
+                    <fa-icon [icon]="faRepeat" class="switch-btn" (click)="openDiv(pedido.id)"></fa-icon>
+                    <div class="options-container">
+                      <h3>Mudar Status</h3>
+                      <ul>
+                        <li (click)="selectOption(pedido.id, 1)">Novo</li>
+                        <li (click)="selectOption(pedido.id, 2)">Em Andamento</li>
+                        <li (click)="selectOption(pedido.id, 3)">Concluído</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="option-container" clickOutside (clickOutside)="clickOutside()"
+                    *ngIf="visibleOptions == pedido.id">
+                    <fa-icon [icon]="faRepeat" class="switch-btn" (click)="toggleOptions(pedido.id)"></fa-icon>
+                    <div class="options-container" id="opt-{{pedido.id}}">
+                      <h3>Mudar Status</h3>
+                      <ul>
+                        <li (click)="selectOption(pedido.id, 1)">Novo</li>
+                        <li (click)="selectOption(pedido.id, 2)">Em Andamento</li>
+                        <li (click)="selectOption(pedido.id, 3)">Concluído</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <h2>{{ pedido.orderName }}</h2>
+                  <h4>Cliente: {{pedido.customerName}}</h4>
+                  <p>{{ pedido.description }}</p>
+                  <small>{{ pedido.formattedDate }}</small>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size-xs="12" size-sm="12" size-md="4" size-lg="4">
+          <ion-card class="home-col">
+            <ion-card-header>
+              <h3 class="column-title">Em Andamento</h3>
+            </ion-card-header>
+            <ion-card-content class="home-pedidos">
+              <div cdkDropList id="coluna2" [ngClass]="{'disabled': loading}" class="pedido-grid"
+                (cdkDropListDropped)="drop($event)" [cdkDropListData]="colunaEmAndamento"
+                [cdkDropListConnectedTo]="[firstList, thirdList]" #secondList="cdkDropList">
+                <div *ngFor="let pedido of colunaEmAndamento" cdkDrag class="pedido-card" id="ped-{{pedido.id}}">
+                  <div class="option-container" [class.hidden]="visibleOptions == pedido.id">
+                    <fa-icon [icon]="faRepeat" class="switch-btn" (click)="openDiv(pedido.id)"></fa-icon>
+                    <div class="options-container">
+                      <h3>Mudar Status</h3>
+                      <ul>
+                        <li (click)="selectOption(pedido.id, 1)">Novo</li>
+                        <li (click)="selectOption(pedido.id, 2)">Em Andamento</li>
+                        <li (click)="selectOption(pedido.id, 3)">Concluído</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="option-container" clickOutside (clickOutside)="clickOutside()"
+                    *ngIf="visibleOptions == pedido.id">
+                    <fa-icon [icon]="faRepeat" class="switch-btn" (click)="toggleOptions(pedido.id)"></fa-icon>
+                    <div class="options-container" id="opt-{{pedido.id}}">
+                      <h3>Mudar Status</h3>
+                      <ul>
+                        <li (click)="selectOption(pedido.id, 1)">Novo</li>
+                        <li (click)="selectOption(pedido.id, 2)">Em Andamento</li>
+                        <li (click)="selectOption(pedido.id, 3)">Concluído</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <h2>{{ pedido.orderName }}</h2>
+                  <h4>Cliente: {{pedido.customerName}}</h4>
+                  <p>{{ pedido.description }}</p>
+                  <small>{{ pedido.formattedDate }}</small>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size-xs="12" size-sm="12" size-md="4" size-lg="4">
+          <ion-card class="home-col">
+            <ion-card-header>
+              <h3 class="column-title">Concluídos</h3>
+            </ion-card-header>
+            <ion-card-content>
+              <div cdkDropList id="coluna3" [ngClass]="{'disabled': loading}" class="pedido-grid"
+                (cdkDropListDropped)="drop($event)" [cdkDropListData]="colunaFinalizado"
+                [cdkDropListConnectedTo]="[firstList, secondList]" #thirdList="cdkDropList">
+                <div *ngFor="let pedido of colunaFinalizado" cdkDrag class="pedido-card" id="ped-{{pedido.id}}">
+                  <div class="option-container" [class.hidden]="visibleOptions == pedido.id">
+                    <fa-icon [icon]="faRepeat" class="switch-btn" (click)="openDiv(pedido.id)"></fa-icon>
+                    <div class="options-container">
+                      <h3>Mudar Status</h3>
+                      <ul>
+                        <li (click)="selectOption(pedido.id, 1)">Novo</li>
+                        <li (click)="selectOption(pedido.id, 2)">Em Andamento</li>
+                        <li (click)="selectOption(pedido.id, 3)">Concluído</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="option-container" clickOutside (clickOutside)="clickOutside()"
+                    *ngIf="visibleOptions == pedido.id">
+                    <fa-icon [icon]="faRepeat" class="switch-btn" (click)="toggleOptions(pedido.id)"></fa-icon>
+                    <div class="options-container" id="opt-{{pedido.id}}">
+                      <h3>Mudar Status</h3>
+                      <ul>
+                        <li (click)="selectOption(pedido.id, 1)">Novo</li>
+                        <li (click)="selectOption(pedido.id, 2)">Em Andamento</li>
+                        <li (click)="selectOption(pedido.id, 3)">Concluído</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <h2>{{ pedido.orderName }}</h2>
+                  <h4>Cliente: {{pedido.customerName}}</h4>
+                  <p>{{ pedido.description }}</p>
+                  <small>{{ pedido.formattedDate }}</small>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
 </ion-content>
