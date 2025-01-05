@@ -44,7 +44,7 @@ Ele irá sincronizar as alterações do código para o aplicativo e abrir o andr
 Foi inserido o apk do aplicativo no seguinte caminho do projeto:
 
 ```
-ionic-project\android\app\build\outputs\apk\debug\app-debug.apk
+ionic-project\apk\app-debug.apk
 ```
 
 Ele pode ser transferido para o dispositivo móvel android e ser executado normalmente.
