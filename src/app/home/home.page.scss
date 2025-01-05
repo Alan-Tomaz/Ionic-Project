@@ -82,9 +82,20 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+.pedido-card h2 {
+  margin-top: .4rem !important;
+  margin-bottom: .6rem !important;
+}
+
+
 .pedido-card p {
   margin-top: .2rem !important;
   margin-bottom: .2rem !important;
+}
+
+.pedido-card small {
+  margin-top: 1rem !important;
+  margin-bottom: .4rem !important;
 }
 
 .load-container {
@@ -163,6 +174,7 @@
   .load-container {
     height: 100%;
   }
+
 }
 
 @media (prefers-color-scheme: dark) {
